@@ -4,6 +4,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.user.internal.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
