@@ -7,7 +7,7 @@ services:
       MYSQL_USER: 'admin'
       MYSQL_PASSWORD: '123123'
     ports:
-      - '33061:3306'
+      - '3306:3306'
   kafka:
     image: apache/kafka:latest
     ports:
