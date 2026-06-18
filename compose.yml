@@ -8,3 +8,24 @@ services:
       MYSQL_PASSWORD: '123123'
     ports:
       - '33061:3306'
+  kafka:
+    image: apache/kafka:latest
+    ports:
+      - "9092:9092"   # Port used by your Spring Boot host application
+      - "9093:9093"   # Internal port used for broker-to-broker communication
+    environment:
+      # Configure KRaft (Kafka Raft metadata mode - No Zookeeper needed)
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
+      
+      # Define listeners for external (your IDE/host) and internal communication
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://localhost:9092'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+      
+      # Automatic topic creation (Great for local development prototyping)
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
